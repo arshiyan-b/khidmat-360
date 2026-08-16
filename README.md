@@ -1,8 +1,8 @@
-# Al-Amanah
+# Khidmat 360
 
 ### Masjid Management System
 
-**Al-Amanah** is a modern web-based Masjid Management System designed to help mosques manage their daily administrative and financial activities in a simple, organized, and transparent way.
+**Khidmat-360** is a modern web-based Masjid Management System designed to help mosques manage their daily administrative and financial activities in a simple, organized, and transparent way.
 
 The system is designed with a focus on simplicity and suitability for Masajid in Pakistan.
 
@@ -38,7 +38,7 @@ The system is designed with a focus on simplicity and suitability for Masajid in
 ## 🏗️ Architecture
 
 ```text
-                    AL-AMANAH
+                    KHIDMAT-360
                         │
                      Next.js
                         │
@@ -235,7 +235,7 @@ The database structure can be expanded as the application grows.
 ## 📁 Suggested Project Structure
 
 ```text
-al-amanah/
+khidmat-360/
 │
 ├── app/
 │   ├── dashboard/
@@ -297,7 +297,7 @@ git clone <repository-url>
 Move into the project:
 
 ```bash
-cd al-amanah
+cd khidmat-360
 ```
 
 Install dependencies:
@@ -366,7 +366,7 @@ Make sure `.env.local` is included in `.gitignore`.
 
 ## 🎯 Project Goals
 
-Al-Amanah aims to provide Masajid with a simple digital system for:
+Khidmat-360 aims to provide Masajid with a simple digital system for:
 
 * Financial transparency
 * Donation management
@@ -379,7 +379,7 @@ Al-Amanah aims to provide Masajid with a simple digital system for:
 
 The primary goal is **simplicity**.
 
-Al-Amanah should remain easy enough for a Masjid committee member with limited technical knowledge to use comfortably.
+Khidmat-360 should remain easy enough for a Masjid committee member with limited technical knowledge to use comfortably.
 
 ---
 
@@ -426,7 +426,7 @@ The project license will be defined before public distribution.
 
 ## 🕌 About
 
-**Al-Amanah**
+**Khidmat-360**
 
 نظام الأمانة لإدارة المساجد
 
