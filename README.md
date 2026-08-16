@@ -1,121 +1,251 @@
 # Khidmat 360
 
-> Complete Masjid Management
+### Masjid Management System
 
-Khidmat 360 is a web-based Masjid management platform that helps Masajid manage administration, members, finances, education, events, and community activities from a single system.
+**Khidmat-360** is a modern web-based Masjid Management System designed to help mosques manage their daily administrative and financial activities in a simple, organized, and transparent way.
 
-The project favors a single, simple application over a distributed one — it should stay easy enough for a Masjid committee member with limited technical knowledge to run and maintain.
+The system is designed with a focus on simplicity and suitability for Masajid in Pakistan.
 
-## Features
+---
 
-- Masjid management
-- Member management
-- Donations and contributions
-- Expense management
-- Finance management
-- Attendance tracking
-- Quran and Islamic education classes
-- Events management
-- Announcements and notices
-- Volunteer management
-- Imam and staff management
-- Reports and dashboards
-- Document management
-- Role-based access control
+## 🚀 Technology Stack
 
-## Tech Stack
+### Frontend & Application
 
-### Application
+* **Next.js** — Full-stack React framework
+* **TypeScript** — Type-safe development
+* **Tailwind CSS** — UI styling
+* **React Hook Form** — Form management
+* **Zod** — Validation and schema definitions
+* **Recharts** — Dashboard charts and financial analytics
 
-- Next.js (App Router)
-- React
-- TypeScript
-- Server Actions / Route Handlers as the API layer
+### Backend & Database
 
-### Database
+* **Supabase** — Backend-as-a-Service
+* **PostgreSQL** — Relational database
+* **Supabase Auth** — Authentication and user management
+* **Supabase Storage** — File and document storage
+* **Row Level Security (RLS)** — Database-level authorization
 
-- PostgreSQL
+### Additional Tools
 
-### ORM
+* **PDF Generation** — Donation receipts and financial reports
+* **Git & GitHub** — Version control
+* **Vercel** — Deployment
 
-- Prisma
+---
 
-### Authentication
-
-- Better Auth
-
-### Forms & Validation
-
-- React Hook Form
-- Zod
-
-### Charts & Reporting
-
-- Recharts
-
-### File Storage
-
-- Private local server storage
-
-### Infrastructure
-
-- Ubuntu
-- Nginx
-- Node.js
-- Git
-- GitHub
-- Let's Encrypt
-
-## Why a Single Application
-
-Earlier iterations of this project considered a separate NestJS API, Redis/BullMQ for background jobs, and Socket.IO for real-time updates. Those are solutions for high-traffic, multi-tenant systems.
-
-Khidmat 360 serves one Masjid's committee at a time — low traffic, a handful of users, no need for horizontal scale. A single Next.js application keeps deployment, types, and auth in one place, with one dev server and one production target.
-
-Background jobs (report generation, email receipts) can run as plain async functions or a scheduled cron task. Real-time feel (e.g. live donation totals) can be achieved with simple refetching rather than a persistent socket connection. These can be added later, individually, only if a specific feature genuinely needs them.
-
-## Architecture
+## 🏗️ Architecture
 
 ```text
-                    Client
-                       |
-                       v
-              Next.js (App Router)
-                       |
-        +--------------+--------------+
-        |                             |
-        v                             v
-  Server Actions /              Better Auth
-  Route Handlers                     |
-        |                            v
-        v                      Session / Users
-     Prisma
-        |
-        v
-   PostgreSQL
-        |
-        v
-  Private File Storage
+                    KHIDMAT-360
+                        │
+                     Next.js
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+          Frontend              Server
+             │                     │
+             └──────────┬──────────┘
+                        │
+                     Supabase
+                        │
+          ┌─────────────┼─────────────┐
+          │             │             │
+      PostgreSQL       Auth        Storage
+          │
+     Row Level Security
 ```
 
-## Project Structure
+---
+
+## ✨ Core Features
+
+### Dashboard
+
+The dashboard provides an overview of the Masjid's activities and finances.
+
+* Total donations
+* Total expenses
+* Current balance
+* Monthly income
+* Monthly expenses
+* Recent transactions
+* Upcoming events
+* Pending payments
+
+### 💰 Donations
+
+Manage all donations received by the Masjid.
+
+* Add donations
+* Donor records
+* Donation categories
+* Donation purposes
+* Payment methods
+* Donation history
+* Donation receipts
+* Monthly donation reports
+
+Example categories:
+
+* General Donation
+* Masjid Construction
+* Maintenance
+* Ramadan
+* Zakat
+* Fitrah
+* Other
+
+### 💸 Expenses
+
+Track Masjid expenses.
+
+* Electricity
+* Water
+* Gas
+* Cleaning
+* Maintenance
+* Construction
+* Staff salaries
+* Security
+* Other expenses
+
+### 👨‍💼 Staff Management
+
+Manage Masjid staff and their salaries.
+
+Supported roles can include:
+
+* Imam
+* Muazzin
+* Teacher
+* Cleaner
+* Security
+* Other staff
+
+Information can include:
+
+* Name
+* Role
+* Contact information
+* Joining date
+* Salary
+* Status
+
+### 💵 Salary Management
+
+Track staff salary payments.
+
+* Monthly salary
+* Payment status
+* Payment date
+* Payment history
+* Outstanding salaries
+
+### 📊 Reports
+
+Generate financial and administrative reports.
+
+* Monthly income report
+* Monthly expense report
+* Donation report
+* Expense breakdown
+* Salary report
+* Balance report
+* Transaction history
+
+### 🧾 Receipts
+
+Generate printable or downloadable receipts.
+
+Donation receipts can contain:
+
+* Receipt number
+* Donor name
+* Amount
+* Purpose
+* Payment method
+* Date
+* Masjid information
+
+### 📅 Events
+
+Manage Masjid events and activities.
+
+Examples:
+
+* Jummah
+* Taraweeh
+* Eid prayers
+* Quran classes
+* Islamic lectures
+* Fundraising events
+
+---
+
+## 🔐 Authentication & Authorization
+
+Authentication is handled using **Supabase Auth**.
+
+The system can support role-based access such as:
+
+### Admin
+
+Full access to the system.
+
+### Accountant
+
+Access to:
+
+* Donations
+* Expenses
+* Transactions
+* Reports
+* Receipts
+
+### Staff
+
+Limited access based on assigned permissions.
+
+Database-level security is implemented using **Supabase Row Level Security (RLS)**.
+
+---
+
+## 🗄️ Initial Database Structure
+
+The initial database may contain tables such as:
+
+```text
+users
+mosques
+donors
+donations
+expenses
+staff
+salary_payments
+events
+assets
+```
+
+The database structure can be expanded as the application grows.
+
+---
+
+## 📁 Suggested Project Structure
 
 ```text
 khidmat-360/
+│
 ├── app/
 │   ├── dashboard/
 │   ├── donations/
 │   ├── expenses/
 │   ├── staff/
 │   ├── salaries/
-│   ├── members/
-│   ├── attendance/
-│   ├── classes/
-│   ├── events/
-│   ├── announcements/
-│   ├── volunteers/
 │   ├── reports/
-│   └── api/
+│   ├── receipts/
+│   └── events/
 │
 ├── components/
 │   ├── ui/
@@ -125,235 +255,184 @@ khidmat-360/
 │   └── reports/
 │
 ├── lib/
-│   ├── auth/
+│   ├── supabase/
 │   ├── validations/
 │   └── utils/
-│
-├── prisma/
-│   └── schema.prisma
 │
 ├── types/
 │
 ├── public/
 │
-├── storage/
-│   └── private/
-│       ├── documents/
-│       └── reports/
+├── supabase/
+│   └── migrations/
 │
-├── .env
+├── .env.local
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-## Requirements
+---
 
-- Node.js 20+
-- npm
-- PostgreSQL
-- Git
+## ⚙️ Requirements
 
-## Installation
+Before running the project, make sure you have:
+
+* Node.js 20+
+* npm
+* Git
+* Supabase account
+* PostgreSQL database through Supabase
+
+---
+
+## 🔧 Installation
 
 Clone the repository:
 
-```bash
+``` bash
 git clone <repository-url>
 cd khidmat-360
 ```
 
-Install dependencies:
+Install PHP dependencies:
 
-```bash
+``` bash
+composer install
+```
+
+Install frontend dependencies:
+
+``` bash
 npm install
 ```
 
 Create the environment file:
 
 ```bash
-cp .env.example .env
+.env.local
 ```
 
-## Environment Configuration
+Add the required Supabase configuration:
 
 ```env
-DATABASE_URL="postgresql://postgres:password@localhost:5432/khidmat_360"
-
-BETTER_AUTH_SECRET=your_generated_secret
-BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-Never commit `.env` files containing secrets.
+Run the development server:
 
-## Database Setup
-
-Generate the Prisma client:
-
-```bash
-npx prisma generate
-```
-
-Run migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-Open Prisma Studio to inspect data:
-
-```bash
-npx prisma studio
-```
-
-## Development
-
-```bash
+``` bash
 npm run dev
 ```
 
-The application will be available at:
+## Laravel Development
 
-```text
-http://localhost:3000
+Start the Laravel development server:
+
+``` bash
+php artisan serve
 ```
 
-## Production Build
+---
+
+## 🏭 Production Build
+
+Create a production build:
 
 ```bash
 npm run build
+```
+
+Start the production server:
+
+```bash
 npm start
 ```
 
-## Authentication
+---
 
-Better Auth handles authentication and session management within the Next.js app.
+## 🔒 Environment Variables
 
-Authentication includes:
+Never commit sensitive credentials to GitHub.
 
-- Registration
-- Login
-- Logout
-- Session management
-- Password management
-- Protected routes
-- Role-based authorization
+Example:
 
-## File Storage
-
-Private documents are stored on the application server, not exposed through the public directory.
-
-```text
-storage/
-└── private/
-    ├── documents/
-    └── reports/
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
-Access to private files should go through authorized Server Actions or Route Handlers rather than direct filesystem paths.
+Make sure `.env.local` is included in `.gitignore`.
 
-## Application Layers
+---
 
-```text
-Request
-   |
-   v
-Route Handler / Server Action
-   |
-   v
-Validation (Zod)
-   |
-   v
-Service / lib function
-   |
-   v
-Prisma
-   |
-   v
-PostgreSQL
-```
+## 🎯 Project Goals
 
-Business logic should be kept in dedicated functions under `lib/`, not scattered across route handlers or components.
+Khidmat-360 aims to provide Masajid with a simple digital system for:
 
-## Modules
+* Financial transparency
+* Donation management
+* Expense tracking
+* Staff management
+* Salary management
+* Reporting
+* Receipt generation
+* Event management
 
-The application can be organized into domain-specific route groups and libs:
+The primary goal is **simplicity**.
 
-```text
-donations/
-expenses/
-finance/
-members/
-attendance/
-classes/
-events/
-announcements/
-volunteers/
-staff/
-reports/
-```
+Khidmat-360 should remain easy enough for a Masjid committee member with limited technical knowledge to use comfortably.
 
-## Production Deployment
+---
 
-```text
-                Internet
-                   |
-                   v
-                 Nginx
-                   |
-                   v
-             Next.js (Node.js)
-                   |
-        +----------+----------+
-        |                     |
-        v                     v
-   PostgreSQL           Private Storage
-```
+## 🛣️ Future Features
 
-Let's Encrypt can be used for HTTPS certificates.
+Potential future additions include:
 
-## Security
+* Multiple Masjid support
+* Urdu language support
+* Arabic language support
+* Mosque asset management
+* Maintenance requests
+* Donation campaigns
+* Zakat management
+* Ramadan management
+* Quran/Madrasa management
+* Committee member management
+* Announcement management
+* SMS notifications
+* WhatsApp notifications
+* Automated financial reports
+* Public transparency page
 
-- Validate all incoming requests (Zod)
-- Protect authenticated routes
-- Apply role-based authorization
-- Keep private files protected
-- Keep database credentials private
-- Never commit `.env` files
-- Use HTTPS in production
-- Keep dependencies updated
-- Use secure password hashing (handled by Better Auth)
-- Restrict database access
-- Maintain regular backups
+---
 
-## Development Guidelines
+## 🤝 Contributing
 
-### TypeScript
+Contributions are welcome.
 
-TypeScript is used throughout the application for type safety and maintainability.
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Test your changes.
+5. Commit your changes.
+6. Open a pull request.
 
-### Separation of Concerns
+---
 
-Keep responsibilities separated: route/action → validation → service function → Prisma → PostgreSQL.
+## 📄 License
 
-### Database Access
+The project license will be defined before public distribution.
 
-Database operations should be handled through Prisma.
+---
 
-### API
+## 🕌 About
 
-Server Actions are preferred for internal mutations; Route Handlers are used where a REST-style endpoint is needed (e.g. for future external integrations).
+**Khidmat-360**
 
-## Future Additions
+نظام الأمانة لإدارة المساجد
 
-Add only when a concrete need arises:
+**Trusted Management for Every Masjid**
 
-- Background job runner (e.g. cron-based) for scheduled reports
-- Real-time updates for live dashboards
-- Separate API service, if the platform needs to serve non-web clients
-
-## License
-
-This project is currently intended for private development and deployment.
-
-Add an appropriate license before public distribution.
+Built to help Masajid manage their administration, finances, staff, and community activities with simplicity and transparency.
