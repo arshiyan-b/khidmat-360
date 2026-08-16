@@ -1,435 +1,385 @@
 # Khidmat 360
 
-### Masjid Management System
+> Complete Masjid Management
 
-**Khidmat-360** is a modern web-based Masjid Management System designed to help mosques manage their daily administrative and financial activities in a simple, organized, and transparent way.
+Khidmat 360 is a self-hosted web-based Masjid Management / ERP platform
+designed to help Masajid manage their day-to-day operations from one
+place.
 
-The system is designed with a focus on simplicity and suitability for Masajid in Pakistan.
+The project is designed around open-source technologies and avoids
+dependency on paid third-party backend platforms such as Supabase.
 
----
+## Technology Stack
 
-## 🚀 Technology Stack
+### Frontend
 
-### Frontend & Application
+-   React
+-   Vite
+-   JavaScript / TypeScript
+-   Modern responsive UI
 
-* **Next.js** — Full-stack React framework
-* **TypeScript** — Type-safe development
-* **Tailwind CSS** — UI styling
-* **React Hook Form** — Form management
-* **Zod** — Validation and schema definitions
-* **Recharts** — Dashboard charts and financial analytics
+### Backend
 
-### Backend & Database
+-   Laravel
+-   PHP
+-   Laravel Sanctum for API authentication
+-   Laravel Reverb for real-time functionality
+-   Laravel Queue for background jobs
 
-* **Supabase** — Backend-as-a-Service
-* **PostgreSQL** — Relational database
-* **Supabase Auth** — Authentication and user management
-* **Supabase Storage** — File and document storage
-* **Row Level Security (RLS)** — Database-level authorization
+### Database
 
-### Additional Tools
+-   PostgreSQL
 
-* **PDF Generation** — Donation receipts and financial reports
-* **Git & GitHub** — Version control
-* **Vercel** — Deployment
+### File Storage
 
----
+-   Laravel local/private filesystem
+-   Files are stored on the application's own server instead of a paid
+    storage provider
 
-## 🏗️ Architecture
+### Infrastructure
 
-```text
-                    KHIDMAT-360
-                        │
-                     Next.js
-                        │
-             ┌──────────┴──────────┐
-             │                     │
-          Frontend              Server
-             │                     │
-             └──────────┬──────────┘
-                        │
-                     Supabase
-                        │
-          ┌─────────────┼─────────────┐
-          │             │             │
-      PostgreSQL       Auth        Storage
-          │
-     Row Level Security
+-   Ubuntu Linux
+-   Nginx
+-   Git
+-   Let's Encrypt SSL
+
+## Architecture
+
+``` text
+React + Vite
+      |
+      v
+ Laravel API
+      |
+      +--------------------+
+      |                    |
+      v                    v
+ PostgreSQL          Private File Storage
+      |
+      v
+ Laravel Services / Jobs / Events
 ```
 
----
+## Supabase Replacements
 
-## ✨ Core Features
+Khidmat 360 does not require Supabase.
 
-### Dashboard
+  -----------------------------------------------------------------------
+  Supabase Feature                    Khidmat 360 Replacement
+  ----------------------------------- -----------------------------------
+  PostgreSQL                          Self-hosted PostgreSQL
 
-The dashboard provides an overview of the Masjid's activities and finances.
+  Supabase Auth                       Laravel Sanctum
 
-* Total donations
-* Total expenses
-* Current balance
-* Monthly income
-* Monthly expenses
-* Recent transactions
-* Upcoming events
-* Pending payments
+  Supabase Storage                    Laravel private/local storage
 
-### 💰 Donations
+  Supabase Realtime                   Laravel Reverb
 
-Manage all donations received by the Masjid.
+  Supabase Edge Functions             Laravel Controllers, Jobs and
+                                      Commands
 
-* Add donations
-* Donor records
-* Donation categories
-* Donation purposes
-* Payment methods
-* Donation history
-* Donation receipts
-* Monthly donation reports
+  Supabase API                        Laravel API
 
-Example categories:
+  Database Triggers                   PostgreSQL triggers or Laravel
+                                      Events / Observers
+  -----------------------------------------------------------------------
 
-* General Donation
-* Masjid Construction
-* Maintenance
-* Ramadan
-* Zakat
-* Fitrah
-* Other
+This keeps the application under our own control and avoids vendor
+dependency.
 
-### 💸 Expenses
+## Core Modules
 
-Track Masjid expenses.
+The platform can be extended with modules such as:
 
-* Electricity
-* Water
-* Gas
-* Cleaning
-* Maintenance
-* Construction
-* Staff salaries
-* Security
-* Other expenses
+-   Masjid management
+-   Members and community management
+-   Donations
+-   Expenses
+-   Finance and accounting
+-   Attendance
+-   Classes and Quran education
+-   Announcements
+-   Events
+-   Volunteers
+-   Notices
+-   Reports
+-   Document management
 
-### 👨‍💼 Staff Management
+## Project Structure
 
-Manage Masjid staff and their salaries.
+### Backend
 
-Supported roles can include:
-
-* Imam
-* Muazzin
-* Teacher
-* Cleaner
-* Security
-* Other staff
-
-Information can include:
-
-* Name
-* Role
-* Contact information
-* Joining date
-* Salary
-* Status
-
-### 💵 Salary Management
-
-Track staff salary payments.
-
-* Monthly salary
-* Payment status
-* Payment date
-* Payment history
-* Outstanding salaries
-
-### 📊 Reports
-
-Generate financial and administrative reports.
-
-* Monthly income report
-* Monthly expense report
-* Donation report
-* Expense breakdown
-* Salary report
-* Balance report
-* Transaction history
-
-### 🧾 Receipts
-
-Generate printable or downloadable receipts.
-
-Donation receipts can contain:
-
-* Receipt number
-* Donor name
-* Amount
-* Purpose
-* Payment method
-* Date
-* Masjid information
-
-### 📅 Events
-
-Manage Masjid events and activities.
-
-Examples:
-
-* Jummah
-* Taraweeh
-* Eid prayers
-* Quran classes
-* Islamic lectures
-* Fundraising events
-
----
-
-## 🔐 Authentication & Authorization
-
-Authentication is handled using **Supabase Auth**.
-
-The system can support role-based access such as:
-
-### Admin
-
-Full access to the system.
-
-### Accountant
-
-Access to:
-
-* Donations
-* Expenses
-* Transactions
-* Reports
-* Receipts
-
-### Staff
-
-Limited access based on assigned permissions.
-
-Database-level security is implemented using **Supabase Row Level Security (RLS)**.
-
----
-
-## 🗄️ Initial Database Structure
-
-The initial database may contain tables such as:
-
-```text
-users
-mosques
-donors
-donations
-expenses
-staff
-salary_payments
-events
-assets
+``` text
+app/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   └── Resources/
+├── Models/
+├── Services/
+├── Jobs/
+├── Events/
+└── Observers/
 ```
 
-The database structure can be expanded as the application grows.
+### Frontend
 
----
-
-## 📁 Suggested Project Structure
-
-```text
-khidmat-360/
-│
-├── app/
-│   ├── dashboard/
-│   ├── donations/
-│   ├── expenses/
-│   ├── staff/
-│   ├── salaries/
-│   ├── reports/
-│   ├── receipts/
-│   └── events/
-│
-├── components/
-│   ├── ui/
-│   ├── dashboard/
-│   ├── donations/
-│   ├── expenses/
-│   └── reports/
-│
-├── lib/
-│   ├── supabase/
-│   ├── validations/
-│   └── utils/
-│
-├── types/
-│
-├── public/
-│
-├── supabase/
-│   └── migrations/
-│
-├── .env.local
-├── package.json
-├── tsconfig.json
-└── README.md
+``` text
+resources/
+└── js/
+    ├── components/
+    ├── pages/
+    ├── layouts/
+    ├── services/
+    └── routes/
 ```
 
----
+## Requirements
 
-## ⚙️ Requirements
+Before installing the project, make sure the server has:
 
-Before running the project, make sure you have:
+-   PHP 8.2+
+-   Composer
+-   Node.js
+-   npm
+-   PostgreSQL
+-   Nginx
+-   Git
 
-* Node.js 20+
-* npm
-* Git
-* Supabase account
-* PostgreSQL database through Supabase
-
----
-
-## 🔧 Installation
+## Installation
 
 Clone the repository:
 
-```bash
+``` bash
 git clone <repository-url>
-```
-
-Move into the project:
-
-```bash
 cd khidmat-360
 ```
 
-Install dependencies:
+Install PHP dependencies:
 
-```bash
+``` bash
+composer install
+```
+
+Install frontend dependencies:
+
+``` bash
 npm install
 ```
 
 Create the environment file:
 
-```bash
-.env.local
+``` bash
+cp .env.example .env
 ```
 
-Add the required Supabase configuration:
+Generate the Laravel application key:
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+``` bash
+php artisan key:generate
 ```
 
-Run the development server:
+## Database Configuration
 
-```bash
+Configure PostgreSQL in `.env`:
+
+``` env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=khidmat_360
+DB_USERNAME=postgres
+DB_PASSWORD=
+```
+
+Run migrations:
+
+``` bash
+php artisan migrate
+```
+
+If seeders are available:
+
+``` bash
+php artisan db:seed
+```
+
+## Frontend Development
+
+Start the Vite development server:
+
+``` bash
 npm run dev
 ```
 
-The application will be available at:
+## Laravel Development
 
-```text
-http://localhost:3000
+Start the Laravel development server:
+
+``` bash
+php artisan serve
 ```
 
----
+## Production Build
 
-## 🏭 Production Build
+Build the frontend:
 
-Create a production build:
-
-```bash
+``` bash
 npm run build
 ```
 
-Start the production server:
+Optimize Laravel:
 
-```bash
-npm start
+``` bash
+php artisan optimize
 ```
 
----
+## Storage
 
-## 🔒 Environment Variables
+Khidmat 360 uses Laravel's filesystem instead of an external storage
+provider.
 
-Never commit sensitive credentials to GitHub.
+Private files can be stored using:
+
+``` php
+$file->store('books', 'private');
+```
+
+Private files should be served through authorized Laravel endpoints
+rather than exposing their filesystem path directly.
+
+## Authentication
+
+Laravel Sanctum is used for API authentication.
+
+Authentication responsibilities include:
+
+-   Login
+-   Logout
+-   Session/token management
+-   User authorization
+-   Protected API routes
+
+## Real-Time Features
+
+Laravel Reverb can be used for real-time functionality such as:
+
+-   Live notifications
+-   Donation updates
+-   Administrative alerts
+-   Community updates
+-   Real-time dashboard information
+
+## Background Jobs
+
+Laravel Queue can handle tasks that should run outside the request
+lifecycle, such as:
+
+-   Notifications
+-   Emails
+-   Report generation
+-   File processing
+-   Other long-running tasks
+
+The database queue driver can be used when an external queue service is
+not required.
+
+## Development Principles
+
+### Service Layer
+
+Business logic should be kept inside service classes rather than large
+controllers.
 
 Example:
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+``` text
+Controller
+    ↓
+Form Request
+    ↓
+Service
+    ↓
+Model
 ```
 
-Make sure `.env.local` is included in `.gitignore`.
+### Form Requests
 
----
+Validation should be handled through dedicated Form Request classes.
 
-## 🎯 Project Goals
+Example:
 
-Khidmat-360 aims to provide Masajid with a simple digital system for:
+``` bash
+php artisan make:request StoreBookRequest
+```
 
-* Financial transparency
-* Donation management
-* Expense tracking
-* Staff management
-* Salary management
-* Reporting
-* Receipt generation
-* Event management
+### Private Files
 
-The primary goal is **simplicity**.
+Sensitive or restricted documents should not be stored in publicly
+accessible directories.
 
-Khidmat-360 should remain easy enough for a Masjid committee member with limited technical knowledge to use comfortably.
+### API Design
 
----
+API endpoints should follow consistent RESTful conventions and return
+predictable JSON responses.
 
-## 🛣️ Future Features
+### Database
 
-Potential future additions include:
+PostgreSQL should be used as the primary database for production.
 
-* Multiple Masjid support
-* Urdu language support
-* Arabic language support
-* Mosque asset management
-* Maintenance requests
-* Donation campaigns
-* Zakat management
-* Ramadan management
-* Quran/Madrasa management
-* Committee member management
-* Announcement management
-* SMS notifications
-* WhatsApp notifications
-* Automated financial reports
-* Public transparency page
+## Security
 
----
+The application should follow standard security practices:
 
-## 🤝 Contributing
+-   Validate all incoming requests
+-   Authorize access to resources
+-   Keep private files protected
+-   Never commit `.env` files
+-   Hash passwords using Laravel's supported mechanisms
+-   Use HTTPS in production
+-   Keep dependencies updated
+-   Restrict database access to trusted hosts
+-   Use appropriate database backups
 
-Contributions are welcome.
+## Environment Variables
 
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Test your changes.
-5. Commit your changes.
-6. Open a pull request.
+Never commit sensitive values such as:
 
----
+``` text
+APP_KEY
+DB_PASSWORD
+MAIL_PASSWORD
+API_KEYS
+```
 
-## 📄 License
+The `.env` file should remain private.
 
-The project license will be defined before public distribution.
+## Deployment
 
----
+A typical production deployment is:
 
-## 🕌 About
+``` text
+Internet
+   |
+   v
+Nginx
+   |
+   v
+Laravel / PHP-FPM
+   |
+   +---------> PostgreSQL
+   |
+   +---------> Private Storage
+   |
+   +---------> Queue
+   |
+   +---------> Reverb
+```
 
-**Khidmat-360**
+## License
 
-نظام الأمانة لإدارة المساجد
+This project is currently intended for private development and
+deployment.
 
-**Trusted Management for Every Masjid**
-
-Built to help Masajid manage their administration, finances, staff, and community activities with simplicity and transparency.
+Add the appropriate open-source or proprietary license before public
+distribution.
