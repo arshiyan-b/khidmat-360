@@ -21,11 +21,9 @@ The system is designed with a focus on simplicity and suitability for Masajid in
 
 ### Backend & Database
 
-* **Supabase** — Backend-as-a-Service
 * **PostgreSQL** — Relational database
-* **Supabase Auth** — Authentication and user management
-* **Supabase Storage** — File and document storage
-* **Row Level Security (RLS)** — Database-level authorization
+* **Prisma** — Type-safe ORM and migrations
+* **better-auth** — Authentication and session management
 
 ### Additional Tools
 
@@ -48,13 +46,11 @@ The system is designed with a focus on simplicity and suitability for Masajid in
              │                     │
              └──────────┬──────────┘
                         │
-                     Supabase
-                        │
-          ┌─────────────┼─────────────┐
-          │             │             │
-      PostgreSQL       Auth        Storage
-          │
-     Row Level Security
+             ┌──────────┴──────────┐
+             │                     │
+          Prisma               better-auth
+             │                     │
+         PostgreSQL             Sessions
 ```
 
 ---
@@ -186,7 +182,7 @@ Examples:
 
 ## 🔐 Authentication & Authorization
 
-Authentication is handled using **Supabase Auth**.
+Authentication is handled using **better-auth**.
 
 The system can support role-based access such as:
 
@@ -208,7 +204,7 @@ Access to:
 
 Limited access based on assigned permissions.
 
-Database-level security is implemented using **Supabase Row Level Security (RLS)**.
+Authorization checks are enforced at the application layer (API routes / server actions), based on the role stored on the authenticated user.
 
 ---
 
@@ -255,7 +251,8 @@ khidmat-360/
 │   └── reports/
 │
 ├── lib/
-│   ├── supabase/
+│   ├── auth/
+│   ├── prisma/
 │   ├── validations/
 │   └── utils/
 │
@@ -263,10 +260,11 @@ khidmat-360/
 │
 ├── public/
 │
-├── supabase/
+├── prisma/
+│   ├── schema.prisma
 │   └── migrations/
 │
-├── .env.local
+├── .env
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -281,8 +279,7 @@ Before running the project, make sure you have:
 * Node.js 20+
 * npm
 * Git
-* Supabase account
-* PostgreSQL database through Supabase
+* A PostgreSQL database (local, or hosted via Neon, Railway, etc.)
 
 ---
 
@@ -295,13 +292,7 @@ git clone <repository-url>
 cd khidmat-360
 ```
 
-Install PHP dependencies:
-
-``` bash
-composer install
-```
-
-Install frontend dependencies:
+Install dependencies:
 
 ``` bash
 npm install
@@ -310,28 +301,31 @@ npm install
 Create the environment file:
 
 ```bash
-.env.local
+touch .env
 ```
 
-Add the required Supabase configuration:
+Add the required database configuration:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+DATABASE_URL=postgresql://user:password@host:5432/khidmat360
+```
+
+Run the initial Prisma migration:
+
+``` bash
+npx prisma migrate dev --name init
+```
+
+Generate the Prisma client:
+
+``` bash
+npx prisma generate
 ```
 
 Run the development server:
 
 ``` bash
 npm run dev
-```
-
-## Laravel Development
-
-Start the Laravel development server:
-
-``` bash
-php artisan serve
 ```
 
 ---
@@ -359,11 +353,12 @@ Never commit sensitive credentials to GitHub.
 Example:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+DATABASE_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
 ```
 
-Make sure `.env.local` is included in `.gitignore`.
+Make sure `.env` is included in `.gitignore`.
 
 ---
 
