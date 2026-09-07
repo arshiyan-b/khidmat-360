@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
 import { SignOutButton } from "@/components/dashboard/sign-out-button";
+import { DashboardSidebar } from "@/components/dashboard/sidebar";
 
 function formatRs(value: number) {
   return `Rs ${value.toLocaleString("en-US")}`;
@@ -12,17 +13,6 @@ function startOfMonth() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), 1);
 }
-
-const navItems = [
-  { label: "Dashboard", href: "/dashboard", active: true },
-  { label: "Donations", href: "#", active: false },
-  { label: "Expenses", href: "#", active: false },
-  { label: "Staff", href: "#", active: false },
-  { label: "Salaries", href: "#", active: false },
-  { label: "Reports", href: "#", active: false },
-  { label: "Receipts", href: "#", active: false },
-  { label: "Events", href: "#", active: false },
-];
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -35,6 +25,11 @@ export default async function DashboardPage() {
     redirect("/unauthorized");
   }
 
+  if (!session.user.mosqueId) {
+    redirect("/dashboard/setup");
+  }
+
+  const mosqueId = session.user.mosqueId;
   const monthStart = startOfMonth();
 
   const [
@@ -47,33 +42,35 @@ export default async function DashboardPage() {
     upcomingEvents,
     pendingSalaryPayments,
   ] = await Promise.all([
-    prisma.donation.aggregate({ _sum: { amount: true } }),
-    prisma.expense.aggregate({ _sum: { amount: true } }),
+    prisma.donation.aggregate({ _sum: { amount: true }, where: { mosqueId } }),
+    prisma.expense.aggregate({ _sum: { amount: true }, where: { mosqueId } }),
     prisma.donation.aggregate({
       _sum: { amount: true },
-      where: { donationDate: { gte: monthStart } },
+      where: { mosqueId, donationDate: { gte: monthStart } },
     }),
     prisma.expense.aggregate({
       _sum: { amount: true },
-      where: { expenseDate: { gte: monthStart } },
+      where: { mosqueId, expenseDate: { gte: monthStart } },
     }),
     prisma.donation.findMany({
       take: 5,
+      where: { mosqueId },
       orderBy: { donationDate: "desc" },
       include: { donor: true },
     }),
     prisma.expense.findMany({
       take: 5,
+      where: { mosqueId },
       orderBy: { expenseDate: "desc" },
     }),
     prisma.event.findMany({
       take: 4,
-      where: { startsAt: { gte: new Date() } },
+      where: { mosqueId, startsAt: { gte: new Date() } },
       orderBy: { startsAt: "asc" },
     }),
     prisma.salaryPayment.findMany({
       take: 5,
-      where: { status: { in: ["PENDING", "OVERDUE"] } },
+      where: { status: { in: ["PENDING", "OVERDUE"] }, staff: { mosqueId } },
       include: { staff: true },
       orderBy: { year: "desc" },
     }),
@@ -106,35 +103,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex min-h-screen flex-1 bg-[var(--color-parchment)] text-[var(--color-ink)]">
-      {/* Sidebar */}
-      <aside className="hidden w-56 shrink-0 flex-col border-r border-[var(--color-parchment-dim)] bg-[var(--color-ink)] px-5 py-8 text-[var(--color-parchment)] sm:flex">
-        <span className="font-display text-lg tracking-tight">
-          Khidmat-360
-        </span>
-        <nav className="mt-10 flex flex-col gap-1">
-          {navItems.map((item) =>
-            item.active ? (
-              <a
-                key={item.label}
-                href={item.href}
-                className="rounded-sm bg-white/10 px-3 py-2 text-sm font-medium"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <span
-                key={item.label}
-                className="flex items-center justify-between rounded-sm px-3 py-2 text-sm text-[var(--color-sage)]/60"
-              >
-                {item.label}
-                <span className="font-mono text-[9px] uppercase tracking-wider">
-                  Soon
-                </span>
-              </span>
-            )
-          )}
-        </nav>
-      </aside>
+      <DashboardSidebar currentPath="/dashboard" />
 
       {/* Main */}
       <div className="flex flex-1 flex-col">
