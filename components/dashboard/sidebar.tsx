@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const navItems = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Donations", href: "/donations" },
@@ -6,13 +8,16 @@ const navItems = [
   { label: "Salaries", href: "#", soon: true },
   { label: "Reports", href: "#", soon: true },
   { label: "Receipts", href: "#", soon: true },
-  { label: "Events", href: "#", soon: true },
+  { label: "Events", href: "/events" },
 ];
 
 export function DashboardSidebar({ currentPath }: { currentPath: string }) {
   return (
     <aside className="hidden w-56 shrink-0 flex-col border-r border-[var(--color-parchment-dim)] bg-[var(--color-ink)] px-5 py-8 text-[var(--color-parchment)] sm:flex">
-      <span className="font-display text-lg tracking-tight">Khidmat-360</span>
+      <div className="flex items-center gap-2">
+        <Image src="/brand/logo-symbol-dark.png" alt="" width={28} height={28} />
+        <span className="font-display text-lg tracking-tight">Khidmat-360</span>
+      </div>
       <nav className="mt-10 flex flex-1 flex-col gap-1">
         {navItems.map((item) =>
           item.soon ? (
