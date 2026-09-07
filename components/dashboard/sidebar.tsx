@@ -1,7 +1,7 @@
 const navItems = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Donations", href: "/dashboard/donations" },
-  { label: "Expenses", href: "#", soon: true },
+  { label: "Donations", href: "/donations" },
+  { label: "Expenses", href: "/expenses" },
   { label: "Staff", href: "#", soon: true },
   { label: "Salaries", href: "#", soon: true },
   { label: "Reports", href: "#", soon: true },
@@ -43,9 +43,9 @@ export function DashboardSidebar({ currentPath }: { currentPath: string }) {
 
       <div className="border-t border-[var(--color-parchment)]/10 pt-3">
         <a
-          href="/dashboard/profile"
+          href="/profile"
           className={
-            "/dashboard/profile" === currentPath
+            "/profile" === currentPath
               ? "block rounded-sm bg-white/10 px-3 py-2 text-sm font-medium"
               : "block rounded-sm px-3 py-2 text-sm font-medium text-[var(--color-parchment)]/90 hover:bg-white/10"
           }

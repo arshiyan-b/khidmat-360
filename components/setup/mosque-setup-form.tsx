@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mosqueSchema, type MosqueInput } from "@/lib/validations/mosque";
-import { createMosque } from "@/app/dashboard/setup/actions";
+import { createMosque } from "@/app/setup/actions";
 
 export function MosqueSetupForm() {
   const [serverError, setServerError] = useState<string | null>(null);

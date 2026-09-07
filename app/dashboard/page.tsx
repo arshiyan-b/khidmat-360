@@ -26,7 +26,7 @@ export default async function DashboardPage() {
   }
 
   if (!session.user.mosqueId) {
-    redirect("/dashboard/setup");
+    redirect("/setup");
   }
 
   const mosqueId = session.user.mosqueId;

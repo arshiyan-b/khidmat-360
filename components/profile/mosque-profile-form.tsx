@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mosqueSchema, type MosqueInput } from "@/lib/validations/mosque";
-import { updateMosque } from "@/app/dashboard/profile/actions";
+import { updateMosque } from "@/app/profile/actions";
 
 export function MosqueProfileForm({
   defaultValues,

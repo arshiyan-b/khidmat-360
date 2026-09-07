@@ -9,7 +9,7 @@ import {
   paymentMethods,
   type DonationInput,
 } from "@/lib/validations/donation";
-import { createDonation } from "@/app/dashboard/donations/actions";
+import { createDonation } from "@/app/donations/actions";
 
 const categoryLabels: Record<(typeof donationCategories)[number], string> = {
   GENERAL: "General Donation",
