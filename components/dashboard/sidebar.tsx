@@ -1,13 +1,13 @@
 import Image from "next/image";
 
-const navItems = [
+const navItems: { label: string; href: string; soon?: boolean }[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Donations", href: "/donations" },
   { label: "Expenses", href: "/expenses" },
-  { label: "Staff", href: "#", soon: true },
-  { label: "Salaries", href: "#", soon: true },
-  { label: "Reports", href: "#", soon: true },
-  { label: "Receipts", href: "#", soon: true },
+  { label: "Staff", href: "/staff" },
+  { label: "Salaries", href: "/salaries" },
+  { label: "Reports", href: "/reports" },
+  { label: "Receipts", href: "/receipts" },
   { label: "Events", href: "/events" },
 ];
 
